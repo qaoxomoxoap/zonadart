@@ -1,0 +1,436 @@
+#!/bin/bash
+#=================================================================
+#                                                                
+#        FITXER:  zonadart                                     
+# 
+#            US:  ./zonadart 
+# 
+#    DESCRIPCIÓ:  Rutines de Zona d'Art
+# 
+#       OPCIONS:  ---
+#  REQUIREMENTS:  --- mutt speedtest-cli ipcalc sipcalc secure-delete
+#          BUGS:  ---
+#         NOTES:  ---
+#         AUTOR:  Gonçal Sallan i Baso (), zonadart@autistici.org
+#     COMPANYIA:  Administració de Sistemes Linux
+#        VERSIÓ:  1.0
+#         CREAT:  27/11/09 13:56:11 CET
+#       REVISIÓ:  ---
+#=================================================================
+
+clear
+echo "M E N U :"
+echo "========="
+echo
+echo "mail) Enviar correu"
+echo "ip) Mostrar IP pública i privada"
+echo "cal) Mostrar almanaq"
+echo "av) Actualitzar base antivirus"
+echo "in) Aplicacions d'inici"
+echo "mem) Alliberar memòria"
+echo "swap) Alliberar SWAP"
+echo "iso) Muntar o desmuntar ISO's al disc dur"
+#echo "sqp) Sincronitzar quicksilver-phoenix"
+echo "srv) Activar server de python"
+echo "nm) Veure llistat d'ordinadors conectats a la xarxa"
+echo "ipcalc) Càlcul de xarxes"
+echo "ytb) youtube-dl - Descàrrega de videos de Youtube"
+echo "vel) Velocitat d'internet"
+echo "pdf) Optimitzar pdf"
+echo "wkl) Despertar al grandulló"
+echo "end) Apagar el sistema"
+echo "abanq) Restaurar copia de seguretat"
+echo "del) Administrar copies de seguretat"
+echo "srm) Esborrar un fitxer de forma segura"
+echo "purge) Netejar fitxers de configuració de paquets desint"
+echo "inf) Sistema de fonts infinality"
+echo "n-m) Configurar network manager"
+echo "q) Sortir"
+echo
+
+
+read opcio
+
+case $opcio in
+
+############### Actualitzar base antivirus
+av)
+sudo stuckclam=`lsof -t /var/log/clamav/freshclam.log`
+#echo $stuckclam
+if [[ $stuckclam ]]
+then
+sudo kill -9 $stuckclam
+sudo logger freshclam killed
+fi
+echo
+sudo freshclam
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+###############  Esborrar un fitxer
+srm)
+echo -n "Introdueïx el nom i situació del fitxer ('q' per sortir): "
+read fitxer
+if [ "$fitxer" = "q" ]; then
+  exit
+fi
+srm $fitxer
+echo
+echo "Fitxer esborrat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Configurar Networtk-Manager
+end)
+sudo systemctl poweroff
+exit
+  ;;
+###############  Esborrar un fitxer
+srm)
+echo -n "Introdueïx el nom i situació del fitxer ('q' per sortir): "
+read fitxer
+if [ "$fitxer" = "q" ]; then
+  exit
+fi
+srm $fitxer
+echo
+echo "Fitxer esborrat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+############### Configurar Networtk-Manager
+n-m)
+sudo nm-connection-editor
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+    exit
+  fi
+  ;;
+############### Activar server de python
+srv)
+echo "Introdueïx al navegador" $HOSTNAME":9500"
+echo "Per sortir, Ctrl+c"
+python -m SimpleHTTPServer 9500
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+###############  infinality
+inf)
+sudo bash /etc/fonts/infinality/infctl.sh setstyle
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+###############  youtube-dl
+ytb)
+echo -n "Introdueïx l'adreça del youtube ('q' per sortir): "
+read video
+if [ "$video" = "q" ]; then
+  exit
+fi
+youtube-dl $video
+echo
+echo "Vídeo descarregat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Purgar fitxer de configuració
+purge)
+sudo dpkg --purge `COLUMNS=300 dpkg -l | egrep "^rc" | cut -d' ' -f3`
+echo "Fitxers purgats correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+
+############### Optimitzar pdf
+pdf)
+echo -n "Introdueïx nom del pdf ('q' per sortir): "
+read fitxer
+if [ "$fitxer" = "q" ]; then
+  exit
+fi 
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=optimizado.pdf $fitxer
+echo
+echo "Fitxer pdf optimitzat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+############### Restaurar copia de seguretat Abanq
+abanq)
+ls /home/zonadart/Dropbox/zonadart/documents/sec/comptabilitat/*.sql
+echo -n "Introdueïx copia de seguretat a restaurar ('q' per sortir): "
+dropdb abanq -U zonadart
+createdb abanq -U zonadart -E UNICODE
+read copia
+if [ "$copia" = "q" ]; then
+  exit
+fi
+psql -d abanq -U zonadart -f $copia
+echo
+echo "Base Restaurada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+############### Esborrar copia de seguretat Abanq
+del)
+ls /home/zonadart/Dropbox/zonadart/documents/sec/comptabilitat/*.sql
+echo -n "Introdueïx copia de seguretat a esborrar ('q' per sortir): "
+read borra
+if [ "$borra" = "q" ]; then
+  exit
+fi
+rm /home/zonadart/Dropbox/zonadart/documents/sec/comptabilitat/$borra
+echo
+echo "Còpia Esborrada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Enviar correu
+mail)
+echo -n "Assumpte:"
+read subject
+echo -n "E-Mail:"
+read mail
+echo -n "Missatge:"
+read missatge
+mutt -s \"$subject\" $mail <<< \"$missatge\"
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+
+############### Sincronitzar quicksilver-phoenix
+#sqp)
+#rsync -ravz --delete /home/zonadart/SpiderOak\ Hive/ zonadart@phoenix:SpiderOak/.
+#rsync -ravz --delete /media/EXTERN/llibres/ zonadart@phoenix:documents/llibres/.
+#rsync -ravz --delete /media/MAGATZEM/projectes/ zonadart@phoenix:projectes/.
+#rsync -ravz --delete /media/MAGATZEM/imatges zonadart@phoenix:imatges/.
+#rsync -ravz --delete /media/MAGATZEM/wallpapers zonadart@phoenix:imatges/.
+#rsync -ravz --delete /media/EXTERN/albums/ zonadart@phoenix:imatges/albums/.
+#rsync -ravz --delete /home/zonadart/ownCloud zonadart@phoenix:.
+#rsync -ravz --delete /home/zonadart/Imatges/ zonadart@aoxomoxoa:images/
+
+#echo -n "Pulsa una tecla per sortir: "
+#read exit
+#if [ "$exit" = " " ]; then
+#  exit
+#fi
+#;;
+############### Alliberar memòria
+mem)
+echo -e "\nEstat abans d'alliberar memòria:"
+free -h
+echo
+sudo sync && sudo sysctl -w vm.drop_caches=3
+echo -e "\nEstat desprès d'alliberar memòria:"
+free -h
+echo "Memòria Alliberada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Velocitat d'Internet
+vel)
+speedtest-cli
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Desperta al grandullon
+wkl)
+wakeonlan 00:01:29:fd:f9:54
+#wakeonlan 00:13:49:78:91:42
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### PALIMPSEST
+pal)
+gksudo palimpsest
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### ALMANAQ
+cal)
+ncal -3
+echo -n "Pulsa una tecla per sortir: "
+read exit
+ if [ "$exit" = " " ]; then
+         exit
+fi
+;;
+############### LLISTAT D'ORDINADORS
+nm)
+nmap -sP  192.168.1.1-254
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+		exit
+fi
+;;
+
+############### APLICACIONS D'INICI
+in)
+gnome-session-properties
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+
+########### Alliberar SWAP
+swap)
+echo -e "\nEstat Actual de Swap:"
+free -h
+sudo swapoff -a ; sudo swapon -a
+echo -e "\nEstat desprès d'alliberar Swap:"
+free -h
+echo "Swap Alliberada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+
+########### Muntar i desmuntar ISO's al disc dur
+iso)
+echo
+echo "MENU"
+echo "mnt) Muntar ISO"
+echo "umnt) Desmuntar ISO"
+echo "q) Sortir"
+echo
+read isoption
+case $isoption in
+mnt)
+echo -n "Introdueïx el fitxer ISO ('q:' per sortir): "
+read iso
+if [ "$iso" = "q" ]; then
+  exit
+fi
+sudo mount -t iso9660 -o loop $iso /mnt
+echo
+echo "ISO muntada correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+umnt)
+sudo umount /mnt
+esac
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
+
+########## Càlculs de xarxes
+ipcalc)
+echo -n "Introdueïx la ip de xarxa ('q:' per sortir): "
+read ip
+if [ "$ip" = "q" ]; then
+  exit
+fi
+echo -n "Introdueïx la subnet ('q:' per sortir): "
+read sn
+if [ "$sn" = "q" ]; then
+  exit
+fi
+ipcalc $ip/$sn
+echo "-----------------------------------"
+sipcalc $ip/$sn
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
+###########Ip de xarxa
+ip)
+echo "IP de xarxa: "
+exec /sbin/ifconfig | grep 'inet'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'
+echo "IP pública: "
+exec wget -q -O - checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//' 
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
+
+################################################# Sortir
+q)
+exit
+;;
+
+########### Opció invàlida
+*)
+echo Opció invàlida
+###########################################################
+esac
+
