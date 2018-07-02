@@ -1,2 +1,2 @@
 # zonadart
-Configuracoó
+Configuració
