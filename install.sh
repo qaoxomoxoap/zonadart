@@ -37,4 +37,4 @@ if [ -e "/etc/debian_version" ]; then
 fi
 echo
 echo "Install complete. You can close this terminal."
-sleep 10
+sleep 2
