@@ -13,9 +13,9 @@
 #         NOTES:  ---
 #         AUTOR:  Gonçal Sallan i Baso (), zonadart@autistici.org
 #     COMPANYIA:  Administració de Sistemes Linux
-#        VERSIÓ:  1.0
+#        VERSIÓ:  2.0
 #         CREAT:  27/11/09 13:56:11 CET
-#       REVISIÓ:  ---
+#       REVISIÓ:  03/07/18 13:56:11 CET
 #=================================================================
 
 clear
@@ -67,13 +67,11 @@ echo "***** UTILITATS *****"
 echo "cal) Mostrar almanaq"
 echo "crypton) Muntar imatge encriptada dades"
 echo "cryptoff) Desmuntar imatge encriptada dades"
-echo "del) Administrar copies de seguretat"
 echo "pdf) Optimitzar pdf"
 echo "pi) Calcular número pi"
 echo "ytb) youtube-dl - Descàrrega de videos de Youtube"
 echo
 echo "**********"
-#echo "conf) Esborrar copies de fitxers en comflite MEGA"
 #echo "mail) Enviar correu"
 echo
 echo "q) Sortir"
@@ -325,17 +323,6 @@ if [ "$exit" = " " ]; then
   exit
 fi
 ;;
-############### Actualitzar catxé de fonts
-conf)
-cd $HOME/MEGA/2naydzzb.default/
-find . -name "*conflicto*" -type f -delete
-find . -name "*unison*" -type f -delete
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
 
 ############### Actualitzar catxé de fonts
 font)
@@ -346,7 +333,6 @@ if [ "$exit" = " " ]; then
   exit
 fi
 ;;
-
 
 ############### Actualitzar base antivirus
 av)
@@ -493,24 +479,6 @@ fi
 psql -d abanq -U zonadart -f $copia
 echo
 echo "Base Restaurada Correctament"
-echo
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
-############### Esborrar copia de seguretat Abanq
-del)
-ls $HOME/MEGA/zonadart/documents/sec/comptabilitat/*.sql
-echo -n "Introdueïx copia de seguretat a esborrar ('q' per sortir): "
-read borra
-if [ "$borra" = "q" ]; then
-  exit
-fi
-rm $HOME/MEGA/zonadart/documents/sec/comptabilitat/$borra
-echo
-echo "Còpia Esborrada Correctament"
 echo
 echo -n "Pulsa una tecla per sortir: "
 read exit
