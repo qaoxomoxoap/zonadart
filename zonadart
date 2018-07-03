@@ -26,11 +26,9 @@ echo "***** COMPTABILITAT *****"
 echo "abanq) Restaurar copia de seguretat"
 echo "eneboo) Esborrar copia de seguretat sobrant"
 echo
-#echo "av) Actualitzar base antivirus"
 echo "***** REPOSITORIS I APT *****"
-# echo "back) Instal·lar paquet de jessie-backports"
 echo "deb) Asegurar l'autenticitat dels servidors d'actualització de Debian"
-echo "purge) Netejar fitxers de configuració de paquets desint"
+echo "purge) Netejar fitxers de configuració de paquets desinst"
 echo
 echo "***** SEGURETAT *****"
 echo "dnc) Desencriptar fitxer"
@@ -39,16 +37,14 @@ echo "kpx) Còpia de seguretat de Keepassxc"
 echo "srm) Esborrar fitxer o carpeta de forma segura"
 echo
 echo "***** XARXES *****"
-echo "cli) Demanar informació"
+echo "cli) Demanar informació de web"
 echo "ip) Mostrar IP pública i privada"
 echo "ipcalc) Càlcul de xarxes"
 echo "n-m) Configurar network manager"
 echo "nm) Veure llistat d'ordinadors conectats a la xarxa"
 echo "vel) Velocitat d'internet"
-# echo "wkl) Despertar al grandulló"
 echo
 echo "***** SISTEMA *****"
-# echo "end) Apagar el sistema"
 echo "font) Actualitzar catxé de fonts"
 echo "hd) Llista dels discs durs"
 echo "in) Aplicacions d'inici"
@@ -58,8 +54,6 @@ echo "man) Ajuda de comandes de terminal"
 echo "mem) Alliberar memòria RAM i SWAP"
 echo "prelink) Optimitzar sistema"
 echo "srv) Activar server de python"
-# echo "w10) Muntar Windows 10"
-# echo "x10) Desmuntar Windows 10"
 echo
 echo "***** SERVIDORS *****"
 echo "iftp) Arrancar servidor FTP"
@@ -138,7 +132,7 @@ echo -n "Pulsa una tecla per sortir: "
 
 ############### Demanar informació
 cli)
-echo -n "Introdueïx de què vols la informació ('q' per sortir): "
+echo -n "Introdueïx de què vols web la informació ('q' per sortir): "
 read clifiy
 if [ "$clifiy" = "q" ]; then
     exit
@@ -149,8 +143,8 @@ if [ "$clifiy" = "q" ]; then
   read exit
   if [ "$exit" = " " ]; then
       exit
-    fi
-    ;;
+  fi
+;;
 ############### Còpia de seguretat de Keepassxc
 kpx)
 rm $HOME/MEGA/MEGAsync/zonadart/documents/configuracions/debian/keepassxc/*
@@ -225,51 +219,6 @@ sudo systemctl stop proftpd.service
 echo
 echo "Servidor FTP aturat correctament"
 echo
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
-############### Desmuntar Windows 10
-x10)
-sudo umount /media/zonadart/WIN10/
-
-echo
-echo "Windows 10 desmuntat perfectament"
-echo
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
-############### Muntar Windows 10
-w10)
-sudo mount -t ntfs-3g -o remove_hiberfile /dev/sda4 /media/zonadart/WIN10/
-
-echo
-echo "Windows 10 muntat perfectament a /media/zonadart/WIN10/"
-echo
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
-############### Instal·lar paquet de jessie-backports
-back)
-sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get autoremove
-echo "+++++++++++++++++++"
-echo -n "Nom del paquet a instal·lar: "
-read paquet
-if [ "$paquet" = "q" ]; then
-  exit
-fi
-rama="jessie"
-sudo apt-get -t $rama-backports install $paquet
-
 echo -n "Pulsa una tecla per sortir: "
 read exit
 if [ "$exit" = " " ]; then
@@ -421,28 +370,6 @@ fi
 srm)
 ls -l
 echo -n "Introdueïx nom del fitxer a esborrar ('q' per sortir): "
-read fitxer
-if [ "$fitxer" = "q" ]; then
-  exit
-fi
-srm $fitxer
-echo
-echo "Fitxer esborrat correctament"
-echo
-echo -n "Pulsa una tecla per sortir: "
-read exit
-if [ "$exit" = " " ]; then
-  exit
-fi
-;;
-############### Configurar Networtk-Manager
-end)
-sudo systemctl poweroff
-exit
-;;
-###############  Esborrar un fitxer
-srm)
-echo -n "Introdueïx el nom i situació del fitxer ('q' per sortir): "
 read fitxer
 if [ "$fitxer" = "q" ]; then
   exit
