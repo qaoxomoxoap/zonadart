@@ -54,6 +54,7 @@ echo "man) Ajuda de comandes de terminal"
 echo "mem) Alliberar memòria RAM i SWAP"
 echo "prelink) Optimitzar sistema"
 echo "srv) Activar server de python"
+echo "status) Estat General de l'Ordinador"
 echo
 echo "***** SERVIDORS *****"
 echo "iftp) Arrancar servidor FTP"
@@ -82,6 +83,48 @@ read opcio
 
 case $opcio in
 
+############### Estat General de l'Ordinador
+status)
+echo "Instal·la lm-sensors i hddtemp"
+echo "=================================="
+# Definim colors
+rojo='\033[0;31m'
+rojoI='\033[1;31m'
+rosaI="\033[1;35m"
+amarillo='\033[1;33m'
+cian='\033[1;36m'
+azul='\033[0;34m'
+verde='\033[1;32m'
+destaca='\033[1;38m'
+NC='\033[0m' # No Color
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+sensors
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+hddtemp /dev/sda
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+free -h
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+uptime
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+  if [ "$exit" = " " ]; then
+      exit
+  fi
+;;
+
+############### Pi
 pi)
 echo -n "Introdueïx número de decimals ('q' per sortir): "
 read num
