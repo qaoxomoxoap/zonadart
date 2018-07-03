@@ -85,6 +85,7 @@ case $opcio in
 
 ############### Estat General de l'Ordinador
 status)
+echo "=================================="
 echo "Instal·la lm-sensors i hddtemp"
 echo "=================================="
 # Definim colors
@@ -104,7 +105,8 @@ sensors
 printf "${cian}"
 echo "=================================="
 printf "${NC}"
-hddtemp /dev/sda
+sudo hddtemp /dev/sda
+sudo hddtemp /dev/sdb
 printf "${cian}"
 echo "=================================="
 printf "${NC}"
