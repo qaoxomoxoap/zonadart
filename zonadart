@@ -22,15 +22,58 @@ clear
 echo "M E N U :"
 echo "========="
 echo
-echo "A) COMPTABILITAT"
-echo "B) REPOSITORIS I APT"
-echo "C) SEGURETAT"
-echo "D) XARXES"
-echo "E) SISTEMA"
-echo "F) SERVIDORS"
-echo "G) UTILITATS"
+echo "***** COMPTABILITAT *****"
+echo "abanq) Restaurar copia de seguretat"
+echo "eneboo) Esborrar copia de seguretat sobrant"
+echo
+echo "***** REPOSITORIS I APT *****"
+echo "deb) Asegurar l'autenticitat dels servidors d'actualització de Debian"
+echo "purge) Netejar fitxers de configuració de paquets desinst"
+echo
+echo "***** SEGURETAT *****"
+echo "dnc) Desencriptar fitxer"
+echo "enc) Ecriptar fitxer"
+echo "kpx) Còpia de seguretat de Keepassxc"
+echo "srm) Esborrar fitxer o carpeta de forma segura"
+echo
+echo "***** XARXES *****"
+echo "cli) Demanar informació de web"
+echo "ip) Mostrar IP pública i privada"
+echo "ipcalc) Càlcul de xarxes"
+echo "n-m) Configurar network manager"
+echo "nm) Veure llistat d'ordinadors conectats a la xarxa"
+echo "vel) Velocitat d'internet"
+echo
+echo "***** SISTEMA *****"
+echo "font) Actualitzar catxé de fonts"
+echo "hd) Llista dels discs durs"
+echo "in) Aplicacions d'inici"
+echo "inf) Sistema de fonts infinality"
+echo "iso) Muntar o desmuntar ISO's al disc dur"
+echo "man) Ajuda de comandes de terminal"
+echo "mem) Alliberar memòria RAM i SWAP"
+echo "prelink) Optimitzar sistema"
+echo "srv) Activar server de python"
+echo "status) Estat General de l'Ordinador"
+echo
+echo "***** SERVIDORS *****"
+echo "iftp) Arrancar servidor FTP"
+echo "sftp) Estat del servidor FTP"
+echo "oftp) Parar servidor FTP"
+echo "iweb) Arrancar servidor HTTPS"
+echo "sweb) Estat del servidor HTTPS"
+echo "oweb) Parar servidor HTTPS"
+echo
+echo "***** UTILITATS *****"
+echo "cal) Mostrar almanaq"
+echo "crypton) Muntar imatge encriptada dades"
+echo "cryptoff) Desmuntar imatge encriptada dades"
+echo "pdf) Optimitzar pdf"
+echo "pi) Calcular número pi"
+echo "ytb) youtube-dl - Descàrrega de videos de Youtube"
 echo
 echo "**********"
+#echo "mail) Enviar correu"
 echo
 echo "q) Sortir"
 echo
@@ -40,34 +83,625 @@ read opcio
 
 case $opcio in
 
-A)
-sh /usr/bin/zonadart/compt.sh
+############### Estat General de l'Ordinador
+status)
+echo "=================================="
+echo "Instal·la lm-sensors i hddtemp"
+echo "=================================="
+# Definim colors
+rojo='\033[0;31m'
+rojoI='\033[1;31m'
+rosaI="\033[1;35m"
+amarillo='\033[1;33m'
+cian='\033[1;36m'
+azul='\033[0;34m'
+verde='\033[1;32m'
+destaca='\033[1;38m'
+NC='\033[0m' # No Color
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+sudo sensors
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+sudo hddtemp /dev/sda
+sudo hddtemp /dev/sdb
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+sudo free -h
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+sudo uptime
+printf "${cian}"
+echo "=================================="
+printf "${NC}"
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+  if [ "$exit" = " " ]; then
+      exit
+  fi
 ;;
 
-B)
-sh /usr/bin/zonadart/repo.sh
+############### Pi
+pi)
+echo -n "Introdueïx número de decimals ('q' per sortir): "
+read num
+if [ "$num" = "q" ]; then
+    exit
+  fi
+time echo "scale=$num; a(1)*4" | bc -l
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+   exit
+fi
+;;
+############### Desmuntar cryptical
+cryptoff)
+sudo cryptmount -u cryptical
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+  if [ "$exit" = " " ]; then
+      exit
+  fi
+;;
+############### Muntar cryptical
+crypton)
+sudo cryptmount -m cryptical
+echo -n "$HOME/crypt"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+  if [ "$exit" = " " ]; then
+      exit
+  fi
+;;
+############### prelink - https://ubunlog.com/mejora-el-funcionamiento-de-tu-sistema-y-aplicaciones-con-preload-y-prelink/
+prelink)
+sudo prelink -amvR
+
+echo -n "Pulsa una tecla per sortir: "
+  read exit
+  if [ "$exit" = " " ]; then
+      exit
+    fi
+    ;;
+
+############### Demanar informació
+cli)
+echo -n "Introdueïx de què vols web la informació ('q' per sortir): "
+read clifiy
+if [ "$clifiy" = "q" ]; then
+    exit
+  fi
+  curl cli.fyi/$clifiy
+
+  echo -n "Pulsa una tecla per sortir: "
+  read exit
+  if [ "$exit" = " " ]; then
+      exit
+  fi
+;;
+############### Còpia de seguretat de Keepassxc
+kpx)
+rm $HOME/MEGA/MEGAsync/zonadart/documents/configuracions/debian/keepassxc/*
+cp $HOME/.config/keepassxc/zonadart.kdbx $HOME/MEGA/MEGAsync/zonadart/documents/configuracions/debian/keepassxc/.
+cp $HOME/.config/keepassxc/keepassxc.ini $HOME/MEGA/MEGAsync/zonadart/documents/configuracions/debian/keepassxc/.
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Arrancar servidor HTTPS
+iweb)
+sudo systemctl start apache2.service
+echo
+echo "Servidor HTTPS arrancat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Estat del servidor HTTPS
+sweb)
+sudo systemctl status apache2.service
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Parar servidor HTTPS
+oweb)
+sudo systemctl stop apache2.service
+echo
+echo "Servidor HTTPS aturat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Arrancar servidor FTP
+iftp)
+sudo systemctl start proftpd.service
+echo
+echo "Servidor FTP arrancat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Estat del servidor FTP
+sftp)
+sudo systemctl status proftpd.service
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Parar servidor FTP
+oftp)
+sudo systemctl stop proftpd.service
+echo
+echo "Servidor FTP aturat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Llistat particions disc dur
+hd)
+lsblk -f
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Esborrar fitxer de forma segura
+srm)
+ls -l *
+echo -n "Introdueïx nom del fitxer a esborrar ('q' per sortir): "
+read caput
+if [ "$caput" = "q" ]; then
+  exit
+fi
+shred -n 10 -uvz $caput
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Desencriptar fitxer
+dnc)
+ls -l *.gpg
+echo -n "Introdueïx nom del fitxer a desencriptar ('q' per sortir): "
+read filori
+if [ "$filori" = "q" ]; then
+  exit
+fi
+filenc=${filori%%.*}
+gpg --output $filenc --decrypt $filori
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
 
-C)
-sh /usr/bin/zonadart/sec.sh
+
+############### Encriptar fitxer
+enc)
+ls -l 
+echo -n "Introdueïx nom del fitxer a encriptar ('q' per sortir): "
+read filenc
+if [ "$filenc" = "q" ]; then
+  exit
+fi
+filenca=$filenc".gpg"
+#echo -n "E-Mail: "
+#read mail
+correu="zonadart@autistici.org"
+#read filori
+gpg --output $filenca --encrypt --recipient $correu $filenc
+#shred -u $filori
+
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
 
-D)
-sh /usr/bin/zonadart/xarx.sh
+###############  Asegurar l'autenticitat dels servidors d'actualització de Debian
+deb)
+echo -n "introdueïx codi GPG error ('q' per sortir): "
+read code
+if [ "$code" = "q" ]; then
+  exit
+fi
+gpg --keyserver pgpkeys.mit.edu --recv-key $code
+gpg -a --export $code | sudo apt-key add -
+echo "Clau GPG actualitzada"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+###############  Manual simple de terminal
+man)
+echo -n "Introdueïx el nom del comande a consultar ('q' per sortir): "
+read comande
+if [ "$comande" = "q" ]; then
+  exit
+fi
+tldr $comande
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
 
-E)
-sh /usr/bin/zonadart/sist.sh
+############### Actualitzar catxé de fonts
+font)
+sudo fc-cache -f -v
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
 
-F)
-sh /usr/bin/zonadart/serv.sh
+############### Actualitzar base antivirus
+av)
+sudo stuckclam=`lsof -t /var/log/clamav/freshclam.log`
+#echo $stuckclam
+if [[ $stuckclam ]]
+then
+sudo kill -9 $stuckclam
+sudo logger freshclam killed
+fi
+echo
+sudo freshclam
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
 
-G)
-sh /usr/bin/zonadart/util.sh
+###############  Esborrar un fitxer
+srm)
+ls -l
+echo -n "Introdueïx nom del fitxer a esborrar ('q' per sortir): "
+read fitxer
+if [ "$fitxer" = "q" ]; then
+  exit
+fi
+srm $fitxer
+echo
+echo "Fitxer esborrat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
 ;;
+############### Configurar Networtk-Manager
+n-m)
+sudo nm-connection-editor
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+    exit
+fi
+;;
+############### Activar server de python
+srv)
+echo "Introdueïx al navegador" $HOSTNAME":9500"
+echo "Per sortir, Ctrl+c"
+python -m SimpleHTTPServer 9500
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+###############  infinality
+inf)
+sudo bash /etc/fonts/infinality/infctl.sh setstyle
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+###############  youtube-dl
+ytb)
+echo -n "Introdueïx l'adreça del youtube ('q' per sortir): "
+read video
+if [ "$video" = "q" ]; then
+  exit
+fi
+youtube-dl $video
+echo
+echo "Vídeo descarregat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Purgar fitxer de configuració
+purge)
+sudo dpkg --purge `COLUMNS=300 dpkg -l | egrep "^rc" | cut -d' ' -f3`
+echo "Fitxers purgats correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Optimitzar pdf
+pdf)
+ls -l *.pdf
+echo -n "Introdueïx nom del pdf a optimitzar ('q' per sortir): "
+read fitxer
+if [ "$fitxer" = "q" ]; then
+  exit
+fi
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dNOPAUSE -dQUIET -dBATCH -sOutputFile=optimizado.pdf $fitxer
+echo
+echo "Fitxer pdf optimitzat correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Esborrar copia de seguretat Abanq
+eneboo)
+ls -l $HOME/MEGA/MEGAsync/zonadart/documents/sec/comptabilitat/*.sql
+echo -n "Introdueïx copia de seguretat a esborrar ('q' per sortir): "
+read copy
+if [ "$copy" = "q" ]; then
+  exit
+fi
+rm $copy
+echo
+echo "Copia de Seguretat Esborrada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Restaurar copia de seguretat Abanq
+abanq)
+ls -l $HOME/MEGA/MEGAsync/zonadart/documents/sec/comptabilitat/*.sql
+dropdb abanq -U zonadart
+createdb abanq -U zonadart -E UNICODE
+echo -n "Introdueïx copia de seguretat a restaurar ('q' per sortir): "
+read copia
+if [ "$copia" = "q" ]; then
+  exit
+fi
+psql -d abanq -U zonadart -f $copia
+echo
+echo "Base Restaurada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Enviar correu
+mail)
+echo -n "Assumpte: "
+read subject
+echo -n "E-Mail: "
+read mail
+echo -n "Missatge: "
+read missatge
+mutt -s \"$subject\" $mail <<< \"$missatge\"
 
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Alliberar memòria
+mem)
+echo -e "\nEstat Actual de memoria: "
+free -h
+sudo swapoff -a ; sudo swapon -a
+echo
+sudo sync && sudo sysctl -w vm.drop_caches=3
+echo -e "\nEstat desprès d'alliberar memòria: "
+free -h
+echo "Memòria RAM i SWAP Alliberada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Velocitat d'Internet
+vel)
+speedtest-cli
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### Desperta al grandullon
+wkl)
+wakeonlan 00:01:29:fd:f9:54
+#wakeonlan 00:13:49:78:91:42
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### PALIMPSEST
+pal)
+gksudo palimpsest
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+  exit
+fi
+;;
+############### ALMANAQ
+cal)
+ncal -3
+echo -n "Pulsa una tecla per sortir: "
+read exit
+ if [ "$exit" = " " ]; then
+         exit
+fi
+;;
+############### LLISTAT D'ORDINADORS
+nm)
+sudo nmap -sP 192.168.1.1/24 | grep down -v
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+		exit
+fi
+;;
+############### APLICACIONS D'INICI
+in)
+gnome-session-properties
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+########### Alliberar SWAP
+swap)
+echo -e "\nEstat Actual de Swap: "
+free -h
+sudo swapoff -a ; sudo swapon -a
+echo -e "\nEstat desprès d'alliberar Swap: "
+free -h
+echo "Swap Alliberada Correctament"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+########### Muntar i desmuntar ISO's al disc dur
+iso)
+echo
+echo "MENU"
+echo "mnt) Muntar ISO"
+echo "umnt) Desmuntar ISO"
+echo "q) Sortir"
+echo
+read isoption
+case $isoption in
+mnt)
+echo -n "Introdueïx el fitxer ISO ('q:' per sortir): "
+read iso
+if [ "$iso" = "q" ]; then
+  exit
+fi
+sudo mount -t iso9660 -o loop $iso /media/zonadart/ISO/
+echo
+echo "ISO muntada correctament a /media/zonadart/ISO/"
+echo
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+                exit
+fi
+;;
+umnt)
+sudo umount /media/zonadart/ISO/
+esac
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
+########## Càlculs de xarxes
+ipcalc)
+echo -n "Introdueïx la ip de xarxa ('q:' per sortir): "
+read ip
+if [ "$ip" = "q" ]; then
+  exit
+fi
+echo -n "Introdueïx la subnet ('q:' per sortir): "
+read sn
+if [ "$sn" = "q" ]; then
+  exit
+fi
+ipcalc $ip/$sn
+echo "-----------------------------------"
+sipcalc $ip/$sn
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
+###########Ip de xarxa
+ip)
+echo "IP de xarxa: "
+exec /sbin/ifconfig | grep 'inet'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'
+echo "IP pública: "
+exec wget -q -O - checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//' 
+echo -n "Pulsa una tecla per sortir: "
+read exit
+if [ "$exit" = " " ]; then
+exit
+fi
+;;
 ################################################# Sortir
 q)
 exit
