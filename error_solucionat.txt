@@ -1,0 +1,5 @@
+"wine: virtual memory exhausted"
+Grup Audio -> zonadart
+https://xenodesystems.blogspot.com/2011/12/solucion-wine-virtual-memory-exhausted.html
+
+

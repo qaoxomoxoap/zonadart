@@ -1,0 +1,11 @@
+#*** MINIDLNA
+
+apt install minidlna
+
+vim /etc/minidlna.conf
+
+friendly_name=Prometheus
+media_dir=/home/zonadart
+
+systemctl start minidlna
+systemctl enable minidlna

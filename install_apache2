@@ -1,0 +1,102 @@
+# +++ APACHE2
+
+aptitude install mariadb-server mariadb-client apache2 php7.2 php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-opcache php7.2-readline php7.2-intl php7.2-json php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 phpmyadmin phppgadmin
+
+a2ensite default-ssl
+a2enmod ssl
+a2enmod rewrite
+systemctl restart apache2
+mkdir /etc/apache2/ssl
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
+
+vim /etc/apache2/sites-available/default-ssl.conf
+- ServerName example.com:443
+- SSLEngine on
+- SSLCertificateFile /etc/apache2/ssl/apache.crt
+- SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+************************************************************************************************************
+
+vim /etc/apache2/sites-available/000-default.conf
+<VirtualHost *:80>
+  # The ServerName directive sets the request scheme, hostname and port that
+  # the server uses to identify itself. This is used when creating
+  # redirection URLs. In the context of virtual hosts, the ServerName
+  # specifies what hostname must appear in the request_s Host: header to
+  # match this virtual host. For the default virtual host (this file) this
+  # value is not decisive as it is used as a last resort host regardless.
+  # However, you must set it for any further virtual host explicitly.
+  #ServerName www.example.com
+
+##  ServerAdmin zonadart@autistici.org
+##  DocumentRoot /var/www/html
+
+  # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+  # error, crit, alert, emerg.
+  # It is also possible to configure the loglevel for particular
+  # modules, e.g.
+  #LogLevel info ssl:warn
+
+##  ErrorLog ${APACHE_LOG_DIR}/error.log
+##  CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+  # For most configuration files from conf-available/, which are
+  # enabled or disabled at a global level, it is possible to
+  # include a line for only one particular virtual host. For example the
+  # following line enables the CGI configuration for this host only
+  # after it has been globally disabled with "a2disconf".
+  #Include conf-available/serve-cgi-bin.conf
+
+       RewriteEngine On
+       RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+</VirtualHost>
+
+******************************************************************************
+
+mkdir ~/public_html
+cd /etc/apache2/mods-enabled
+sudo ln -s ../mods-available/userdir.conf userdir.conf
+sudo ln -s ../mods-available/userdir.load userdir.load
+sudo systemctl restart apache2
+
+sudo vim /etc/apache2/mods-enabled/userdir.conf
+###
+<IfModule mod_userdir.c>
+    UserDir public_html
+    UserDir disabled root
+
+    <Directory /home/*/public_html>
+            AllowOverride All
+            Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+                            Allow from all
+                            Order allow,deny
+                            Require all granted
+            <Limit GET POST OPTIONS>
+                    Order allow,deny
+                    Allow from all
+                    Require all granted
+            </Limit>
+            <LimitExcept GET POST OPTIONS>
+                    Order deny,allow
+                    Deny from all
+                    Require all denied
+            </LimitExcept>
+    </Directory>
+</IfModule>
+###
+
+sudo vim /etc/apache2/mods-enabled/php7.0.conf
+###
+#<IfModule mod_userdir.c>
+#    <Directory /home/*/public_html>
+#        php_admin_value engine Off
+#    </Directory>
+#</IfModule>
+###
+
+*************************************************************************************
+
+systemctl restart apache2
+
+*************************************************************************************

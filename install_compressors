@@ -1,0 +1,6 @@
+#*** COMPRESSORS
+
+aptitude install rar unrar arj lhasa liblhasa0 lzip zip unzip unace bzip2 lzop p7zip-full p7zip-rar
+
+
+

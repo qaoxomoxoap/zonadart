@@ -1,0 +1,58 @@
+#*** VSFTPD
+
+apt-get install vsftpd
+systemctl start vsftpd
+systemctl enable vsftpd
+
+mkdir /home/vsftp/ftp
+chown nobody:nogroup /home/vsftp/ftp
+chmod a-w /home/vsftp/ftp
+
+mkdir /home/vsftp/ftp/mis-archivos
+chown vsftp:vsftp /home/vsftp/ftp/mis-archivos
+
+cp /etc/vsftpd.conf /etc/vsftpd.conf.bak
+
+vim /etc/vsftpd.conf
+
+listen=NO
+listen_ipv6=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+chroot_local_user=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+pasv_enable=Yes
+pasv_min_port=10000
+pasv_max_port=11000
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+userlist_deny=NO
+rsa_cert_file=/etc/cert/vsftpd.pem
+rsa_private_key_file=/etc/cert/vsftpd.pem
+ssl_enable=YES
+allow_anon_ssl=NO
+force_local_data_ssl=YES
+force_local_logins_ssl=YES
+ssl_tlsv1=YES
+ssl_sslv2=NO
+ssl_sslv3=NO
+require_ssl_reuse=NO
+ssl_ciphers=HIGH
+
+vim /etc/vsftpd.userlist
+zonadart
+
+mkdir /etc/cert
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/cert/vsftpd.pem -out /etc/cert/vsftpd.pem
+systemctl restart vsftpd
+
+
