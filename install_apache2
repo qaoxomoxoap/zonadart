@@ -17,6 +17,7 @@ vim /etc/apache2/sites-available/default-ssl.conf
 
 ************************************************************************************************************
 
+mv /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default.conf.bak
 vim /etc/apache2/sites-available/000-default.conf
 <VirtualHost *:80>
   # The ServerName directive sets the request scheme, hostname and port that
@@ -56,10 +57,11 @@ vim /etc/apache2/sites-available/000-default.conf
 
 mkdir ~/public_html
 cd /etc/apache2/mods-enabled
-sudo ln -s ../mods-available/userdir.conf userdir.conf
-sudo ln -s ../mods-available/userdir.load userdir.load
+sudo ln -s /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-enabled/userdir.conf
+sudo ln -s /etc/apache2/mods-available/userdir.load /etc/apache2/mods-enabled/userdir.load
 sudo systemctl restart apache2
 
+mv /etc/apache2/mods-enabled/userdir.conf /etc/apache2/mods-enabled/userdir.conf.bak
 sudo vim /etc/apache2/mods-enabled/userdir.conf
 ###
 <IfModule mod_userdir.c>
@@ -86,7 +88,7 @@ sudo vim /etc/apache2/mods-enabled/userdir.conf
 </IfModule>
 ###
 
-sudo vim /etc/apache2/mods-enabled/php7.0.conf
+sudo vim /etc/apache2/mods-enabled/php7.2.conf
 ###
 #<IfModule mod_userdir.c>
 #    <Directory /home/*/public_html>
