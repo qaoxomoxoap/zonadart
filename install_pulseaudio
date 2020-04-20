@@ -1,0 +1,21 @@
+### https://www.sololinux.es/mejorar-la-calidad-del-audio-en-linux-con-pulseaudio/
+
+su -
+vim /etc/pulse/daemon.conf
+
+; resample-method = speex-float-1
+..............
+; default-sample-format = s16le
+; default-sample-rate = 44100
+
+
+
+
+resample-method = src-sinc-best-quality
+..............
+default-sample-format = s24le
+default-sample-rate = 96000
+
+
+pulseaudio -k
+pulseaudio --start
