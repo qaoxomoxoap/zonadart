@@ -1,6 +1,6 @@
 # +++ APACHE2
 
-aptitude install mariadb-server mariadb-client apache2 php7.2 php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-opcache php7.2-readline php7.2-intl php7.2-json php7.2-mbstring php7.2-soap php7.2-xml php7.2-xmlrpc php7.2-zip libapache2-mod-php7.2 phpmyadmin phppgadmin
+apt install mariadb-server mariadb-client apache2 php7.3 php7.3-cli php7.3-common php7.3-curl php7.3-gd php7.3-opcache php7.3-readline php7.3-intl php7.3-json php7.3-mbstring php7.3-soap php7.3-xml php7.3-xmlrpc php7.3-zip libapache2-mod-php7.3 phppgadmin
 
 a2ensite default-ssl
 a2enmod ssl
@@ -10,7 +10,8 @@ mkdir /etc/apache2/ssl
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
 
 vim /etc/apache2/sites-available/default-ssl.conf
-- ServerName example.com:443
+ServerAdmin zonadart@autistici.org
+- ServerName prometheus:443
 - SSLEngine on
 - SSLCertificateFile /etc/apache2/ssl/apache.crt
 - SSLCertificateKeyFile /etc/apache2/ssl/apache.key
@@ -61,7 +62,7 @@ sudo ln -s /etc/apache2/mods-available/userdir.conf /etc/apache2/mods-enabled/us
 sudo ln -s /etc/apache2/mods-available/userdir.load /etc/apache2/mods-enabled/userdir.load
 sudo systemctl restart apache2
 
-mv /etc/apache2/mods-enabled/userdir.conf /etc/apache2/mods-enabled/userdir.conf.bak
+sudo mv /etc/apache2/mods-enabled/userdir.conf /etc/apache2/mods-enabled/userdir.conf.bak
 sudo vim /etc/apache2/mods-enabled/userdir.conf
 ###
 <IfModule mod_userdir.c>
@@ -88,7 +89,7 @@ sudo vim /etc/apache2/mods-enabled/userdir.conf
 </IfModule>
 ###
 
-sudo vim /etc/apache2/mods-enabled/php7.2.conf
+sudo vim /etc/apache2/mods-enabled/php7.3.conf
 ###
 #<IfModule mod_userdir.c>
 #    <Directory /home/*/public_html>
