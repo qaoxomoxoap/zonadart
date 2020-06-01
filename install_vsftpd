@@ -8,7 +8,7 @@ systemctl start vsftpd
 systemctl enable vsftpd
 
 ###############################
-vim vsftpd
+vim /etc/vsftpd.conf
 
 write_enable=YES –> Esta directiva nos permite poder escribir (copiar archivos y carpetas) al servidor FTP.
 
@@ -16,7 +16,7 @@ local_umask=022 –> Esta directiva nos permite habilitar los permisos nuevos cu
 
 ftpd_banner –> Esta directiva permite poner un banner de inicio de sesión.
 
-chroot_list_enable=YES –> Nos permite habilitar el chroot de los diferentes usuarios del sistema, para que solamente un usuario entre en su carpeta /home/usuario y en ninguna más, es una medida de seguridad,                              pero hay que usarla con mucho cuidado ya que si un usuario tiene permisos en directorios superiores tendrá acceso al resto.
+chroot_local_user=YES –> Nos permite habilitar el chroot de los diferentes usuarios del sistema, para que solamente un usuario entre en su carpeta /home/usuario y en ninguna más, es una medida de seguridad,                              pero hay que usarla con mucho cuidado ya que si un usuario tiene permisos en directorios superiores tendrá acceso al resto.
 
 chroot_list_enable=YES –> Nos permite crear una lista con los usuarios en chroot, todos los que aparezcan aquí podrán conectarte.
 
@@ -32,7 +32,7 @@ zonadart
 usuari2
 ###############################
 
-vim vsftpd
+vim /etc/vsftpd.conf
 
 
 anonymous_enable=NO –> Esta directiva sirve para no permitir inicios de sesión anónimos, siempre debe pedir credenciales de usuario.
