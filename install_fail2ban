@@ -1,0 +1,13 @@
+// https://linuxize.com/post/install-configure-fail2ban-on-ubuntu-20-04/
+
+# apt update
+# apt install fail2ban
+
+# systemctl status fail2ban
+
+# cp -pf /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+# vim /etc/fail2ban/jail.local
+
+
+

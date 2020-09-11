@@ -1,0 +1,44 @@
+https://ardour.org/building_linux.html
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+cd $AD
+git clone git://git.ardour.org/ardour/ardour.git <VERSION>
+cd $AD/<VERSION>
+
+./waf configure
+./waf
+
+./waf i18n_pot
+./waf i18n_po
+./waf i18n_mo
+
+./waf install
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+vim /home/quicksulver/bin/ardour6.sh
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#!/bin/bash - 
+#===============================================================================
+#
+#          FILE:  ardour6.sh
+# 
+#         USAGE:  ./ardour6.sh 
+# 
+#   DESCRIPTION:  Arrancament en castellà d Ardour6
+# 
+#       OPTIONS:  ---
+#  REQUIREMENTS:  ---
+#          BUGS:  ---
+#         NOTES:  ---
+#        AUTHOR: Gonçal Sallan i Baso (gsb), zonadart@autistici.org
+#       COMPANY: Zona d_Art
+#       CREATED: 31/7/20 14:32:19 CEST
+#      REVISION:  ---
+#===============================================================================
+
+set -o nounset                              # Treat unset variables as an error
+
+LANGUAGE=es /usr/local/bin/ardour6 &
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
