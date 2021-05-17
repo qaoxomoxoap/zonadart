@@ -39,6 +39,6 @@ vim /home/quicksulver/bin/ardour6.sh
 
 set -o nounset                              # Treat unset variables as an error
 
-LANGUAGE=es /usr/local/bin/ardour6 &
+LANGUAGE=es /usr/bin/ardour6 &
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
