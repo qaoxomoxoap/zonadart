@@ -1,0 +1,28 @@
+### https://blog.desdelinux.net/cifrar-tu-carpeta-de-inicio-en-ubuntu-18-04/
+
+<user_zonadart>
+
+$ su -
+# adduser qaoxomoxoap
+# usermod -aG sudo qaoxomoxoap
+
+### Reiniciar, entrant en l'usuari 'qaoxomoxoap
+
+<user_qaoxomoxoap>
+
+$ su -
+# ecryptfs-migrate-home -u zonadart
+
+### Tancar sessió i obrir sessió de <user_zonadart> (no reiniciar)
+<user_zonadart>
+
+$ ecryptfs-unwrap-passphrase
+
+### Reiniciar, entrant en l'usuari 'zonadart
+
+$ su -
+# ll
+# userdel –remove-home qaoxomoxoap
+# rm -R zonadart.<numeros_i_lletres>
+# systemctl reboot
+
