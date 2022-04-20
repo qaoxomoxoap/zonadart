@@ -1,6 +1,6 @@
 #*** COMPRESSORS
 
-apt install rar unrar arj lhasa liblhasa0 lzip zip unzip unace bzip2 lzop p7zip-full p7zip-rar
+# apt install rar unrar arj lhasa liblhasa0 lzip zip unzip unace bzip2 lzop p7zip-full p7zip-rar
 
 
 

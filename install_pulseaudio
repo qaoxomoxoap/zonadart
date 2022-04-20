@@ -12,7 +12,6 @@ vim /etc/pulse/daemon.conf
 
 
 resample-method = src-sinc-best-quality
-..............
 default-sample-format = s24le
 default-sample-rate = 96000
 
