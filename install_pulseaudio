@@ -1,7 +1,7 @@
 ### https://www.sololinux.es/mejorar-la-calidad-del-audio-en-linux-con-pulseaudio/
 
 su -
-vim /etc/pulse/daemon.conf
+sudo vim /etc/pulse/daemon.conf
 
 ; resample-method = speex-float-1
 ..............

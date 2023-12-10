@@ -1,0 +1,34 @@
+Màq. ppal: prometheus 192.168.1.2
+Màq. sec.: quicksilver 192.168.1.10
+Màq. sec.: lluna	192.168.1.12
+
+DNS 8.8.8.8,8.8.4.4
+
++++ Adjudicar ip fixa i DNS a cada màquina
+
+*** prometheus
+# apt install ssh
+# vim /etc/hosts
+
+192.168.1.2	prometheus
+192.168.1.10	quicksilver
+
+-------------------------------
+$ ssh-keygen -t rsa
+-------------------------------
+$ ssh-copy-id zonadart@quicksilver
+-------------------------------
+
+*** quicksilver
+# apt install ssh
+# vim /etc/hosts
+
+192.168.1.10 quicksilver
+192.168.1.2	prometheus
+
+-------------------------------
+$ ssh-keygen -t rsa
+-------------------------------
+$ ssh-copy-id zonadart@prometheus
+-------------------------------
+

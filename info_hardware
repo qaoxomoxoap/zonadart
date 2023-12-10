@@ -1,0 +1,7 @@
+lspci  										# Totes les tarjes PCI
+lscpu  										# Info CPU
+lsblk  										# Info particions
+lsusb  										# Info USB's connectats
+cat /proc/meminfo					# Info MEMORIA
+sudo dmidecode --type memory | less				#MEMÒRIA
+
