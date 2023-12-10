@@ -121,7 +121,8 @@ if [ -f /usr/share/powerline/bindings/bash/powerline.sh ]; then
 source /usr/share/powerline/bindings/bash/powerline.sh
 fi
 
-screenfetch
+#screenfetch
+neofetch
 
 source /home/zonadart/.config/broot/launcher/bash/br
 
