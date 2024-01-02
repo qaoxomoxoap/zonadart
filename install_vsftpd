@@ -1,14 +1,13 @@
 #*** VSFTPD
 https://www.redeszone.net/tutoriales/servidores/vsftpd-configuracion-servidor-ftp/
 ###############################
-su -
 
-apt-get install vsftpd
-systemctl start vsftpd
-systemctl enable vsftpd
+sudo apt-get install vsftpd
+sudo systemctl start vsftpd
+sudo systemctl enable vsftpd
 
 ###############################
-vim /etc/vsftpd.conf
+sudo vim /etc/vsftpd.conf
 
 write_enable=YES –> Esta directiva nos permite poder escribir (copiar archivos y carpetas) al servidor FTP.
 
@@ -25,14 +24,14 @@ chroot_list_file=/etc/vsftpd.chroot_list –> Es la lista de usuarios con sus ru
 
 
 ###############################
-touch /etc/vsftpd.chroot_list
+sudo touch /etc/vsftpd.chroot_list
 
-vim /etc/vsftpd.chroot_list
+sudo vim /etc/vsftpd.chroot_list
 zonadart
 usuari2
 ###############################
 
-vim /etc/vsftpd.conf
+sudo vim /etc/vsftpd.conf
 
 
 anonymous_enable=NO –> Esta directiva sirve para no permitir inicios de sesión anónimos, siempre debe pedir credenciales de usuario.
@@ -41,14 +40,14 @@ anon_upload_enable=YES –> Aunque esta directiva está comentada (y por tanto, 
                           alguien anónimo.
 
 ###############################
-systemctl restart vsftpd
+sudo systemctl restart vsftpd
 ###############################
 
-adduser usuari2
+sudo adduser usuari2
 ###############################
 https://linoxide.com/install-vsftpd-with-ssl-tls-on-ubuntu-20-04/
 
-vim /etc/vsftpd.conf
+sudo vim /etc/vsftpd.conf
 
 ssl_enable=YES
 rsa_cert_file=/etc/ssl/certs/vsftpd.pem

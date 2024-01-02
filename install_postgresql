@@ -1,6 +1,6 @@
 #*** POSTGRESQL
 
-apt-get install postgresql postgresql-client
+sudo apt-get install postgresql postgresql-client
 su postgres
 psql
 ALTER USER postgres WITH PASSWORD '<password>';
